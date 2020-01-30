@@ -8,17 +8,47 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <title>To Do List</title>
+    <script src="https://kit.fontawesome.com/9b18ba69c6.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-    <div id="myDIV" class="header">
-        <h2 style="margin:5px">My To Do List</h2>
-        <input type="text" id="myInput" placeholder="Title...">
-        <span onclick="newElement()" class="addBtn">Add</span>
+    <p class="h1 text-center mb-4">My TO DO List</p>
+    <div class="row d-flex justify-content-center">
+        <div class="col-11">
+
+
+            <div class="input-group mb-3 border">
+                <div class="input-group-prepend">
+                    <button class="btn btn-outline-secondary" type="button" id="button-addon1">Add New</button>
+                </div>
+                
+                <input type="text" class="form-control" placeholder="titre" aria-label="Example text with button addon"
+                    aria-describedby="button-addon1" id="titreToDo">
+                
+                
+                <input type="text" class="form-control" placeholder="détails" aria-label="Example text with button addon"
+                    aria-describedby="button-addon1" id="contentToDo"> 
+                    
+                   
+            </div>
+        </div>
     </div>
-    <ul class="list-group" id="toDoList">
-       
-      </ul>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <div>
+                <h1 class="display-4">Liste des tâches</h1>
+                <p class="lead">Liste</p>
+
+                <ul class="list-group" id="toDoList">
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+
 
 
 
