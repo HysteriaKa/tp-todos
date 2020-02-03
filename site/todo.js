@@ -3,9 +3,9 @@
   // Envoi de la requete de connexion au serveur
   function getTodoList() {
       fetch('http://localhost:3000/api/v1/todos/?limit=4&offset=0', {
-        method: "GET"
-        
-        })
+              method: "GET"
+
+          })
           .then(res => res.json())
           .then(data => updateToDoList(data))
           .catch(err => handleError(err));
@@ -14,25 +14,25 @@
   function handleError(err) {
       console.error(err);
   }
-  // fonction pour mettre a jour le tableau des todos
+  // fonction pour mettre à jour le tableau des todos
   function updateToDoList(data) {
       let html = "";
       tableaufiltre = data.filter(todo => !todo.done);
-      for (let todo of tableaufiltre ) {
+      for (let todo of tableaufiltre) {
 
           html += createlalistehtml(todo);
       }
       $toDoList.innerHTML = html;
-    }
-    // fonction ecoute du bouton load more
+  }
+  // fonction écoute du bouton load more
 
 
-      function createlalistehtml(todo) {
-          let checkboxAttribute = "";
-          if (todo.done) {
-              checkboxAttribute = "checked";
-          }
-          return `
+  function createlalistehtml(todo) {
+      let checkboxAttribute = "";
+      if (todo.done) {
+          checkboxAttribute = "checked";
+      }
+      return `
         <div class=" col-12 form-check mb-3 border">
             <input class="form-check-input" data-checked-id=${todo.id} type="checkbox" ${checkboxAttribute}>
             <div class="accordeon  mt-2">
@@ -84,9 +84,9 @@
       </div>
     
       `;
-      }
-      
-  
+  }
+
+
   getTodoList();
 
   //recuperer l evenement add new bouton
@@ -101,7 +101,7 @@
       let $title = document.getElementById("titreToDo");
       let $body = document.getElementById("contentToDo");
 
-     const data = {
+      const data = {
           'title': $title.value,
           'content': $body.value
 
@@ -118,8 +118,8 @@
           .then(data => getTodoList(data))
           .catch(err => handleError(err));
 
-          $title.value =""; 
-          $body.value=""; 
+      $title.value = "";
+      $body.value = "";
   }
 
 
@@ -182,7 +182,7 @@
 
   }
 
-  // Ecouter 
+  // Ecouter la checkbox
 
   document.addEventListener('click', function (e) {
       const $target = e.target;
@@ -192,7 +192,7 @@
           todoDone($id, isDone);
       }
   });
-
+  //fonction tâche done et methode patch
   function todoDone($id, isDone) {
 
       const data = {
@@ -208,5 +208,32 @@
           })
           .then(res => res.json())
           .then(data => getTodoList(data))
+          .catch(err => handleError(err));
+  }
+  // pagination, pages, affichage 4 par 4 des todos
+  let page = 0;
+  const nPerPage = 4;
+  document.addEventListener('click', function (e) {
+      const $target = e.target;
+
+      if ($target.classList.contains("next")) {
+          page++;
+
+      }
+
+      if ($target.classList.contains("previous")) {
+          page--;
+      }
+
+      loadPost(page);
+
+  });
+
+  function loadPost(page) {
+      fetch(`http://localhost:3000/api/v1/todos/?limit=${nPerPage}&offset=${page*nPerPage}`, {
+              method: "GET"
+          })
+          .then(res => res.json())
+          .then(data => updateToDoList(data))
           .catch(err => handleError(err));
   }
