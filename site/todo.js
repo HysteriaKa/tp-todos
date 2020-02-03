@@ -2,7 +2,10 @@
 
   // Envoi de la requete de connexion au serveur
   function getTodoList() {
-      fetch('http://localhost:3000/api/v1/todos/')
+      fetch('http://localhost:3000/api/v1/todos/?limit=4&offset=0', {
+        method: "GET"
+        
+        })
           .then(res => res.json())
           .then(data => updateToDoList(data))
           .catch(err => handleError(err));
@@ -20,6 +23,9 @@
           html += createlalistehtml(todo);
       }
       $toDoList.innerHTML = html;
+    }
+    // fonction ecoute du bouton load more
+
 
       function createlalistehtml(todo) {
           let checkboxAttribute = "";
@@ -27,62 +33,60 @@
               checkboxAttribute = "checked";
           }
           return `
-    <div class="form-check border">
-        
-        <label class="form-check-label" for="defaultCheck1"></label>
-
-        <div class="accordion" id="accordionExample">
-            <div class="card">
-                <div class="card-header" id="headingOne">
-                
-                <input class="form-check-input" data-checked-id=${todo.id} type="checkbox" ${checkboxAttribute}>
-
-                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseOne${todo.id}" aria-expanded="true" aria-controls="collapseOne">
+        <div class=" col-12 form-check mb-3 border">
+            <input class="form-check-input" data-checked-id=${todo.id} type="checkbox" ${checkboxAttribute}>
+            <div class="accordeon  mt-2">
+                <p class="">   
+                    <button class="btn btn-info" type="button" data-toggle="collapse" data-target="#collapseExample${todo.id}" aria-expanded="false" aria-controls="collapseExample">
                         ${todo.title}
-                    </button>
-                    
-
-
-                    <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal${todo.id}">
-                      Modifier ToDo
-                    </button>
-
-                    <a href="#"><i id ="trash" data-delete-id=${todo.id} class="fas fa-trash text-info"></i></a>
-                    
-                    <!-- Modal -->
-                    <div class="modal fade" id="exampleModal${todo.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog" role="document">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value ="${todo.title}">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                          <input type="email" class="form-control" id="content" aria-describedby="emailHelp" value ="${todo.content}">
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" data-edit-id=${todo.id} class="btn btn-secondary" data-dismiss="modal">Edit</button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    
-                </div>
-                <div id="collapseOne${todo.id}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
-                    <div class="card-body">                        
+                    </button> 
+                </p>
+                <div class="collapse" id="collapseExample${todo.id}">
+                    <div class="card card-body">
                         ${todo.content}
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+            
+          <div class="modalTodo text-center mt-3">
+          <!-- Button trigger modal -->
+          <button type="button" d-flex justify-content-end class="btn btn-dark" class="text-success"data-toggle="modal"
+              data-target="#exampleModal${todo.id}">
+              Modifier ToDo
+          </button>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal${todo.id}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                              value="${todo.title}">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                      </div>
+                      <div class="modal-body">
+                          <input type="email" class="form-control" id="content" aria-describedby="emailHelp"
+                              value="${todo.content}">
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" data-edit-id=${todo.id} class="btn btn-secondary"
+                              data-dismiss="modal">Edit</button>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          </div>
+          <div class="text-right">
+          <a href="#" ><i id="trash" data-delete-id=${todo.id}  ml-3 class="fas fa-trash text-info"></i></a>
+          </div>
+      </div>
+    
       `;
       }
-  }
+      
+  
   getTodoList();
 
   //recuperer l evenement add new bouton
@@ -94,12 +98,12 @@
 
   function addNewToDo() {
 
-      const titleContent = document.getElementById("titreToDo").value;
-      const contentContent = document.getElementById("contentToDo").value;
+      let $title = document.getElementById("titreToDo");
+      let $body = document.getElementById("contentToDo");
 
-      const data = {
-          'title': titleContent,
-          'content': contentContent,
+     const data = {
+          'title': $title.value,
+          'content': $body.value
 
       }
 
@@ -113,7 +117,11 @@
           .then(res => res.json())
           .then(data => getTodoList(data))
           .catch(err => handleError(err));
+
+          $title.value =""; 
+          $body.value=""; 
   }
+
 
   //supprimer un todo
 
